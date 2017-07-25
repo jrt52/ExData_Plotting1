@@ -1,11 +1,10 @@
 unzip("exdata_data_household_power_consumption.zip")
 ##Load data 
 power <- read.table("household_power_consumption.txt", header = TRUE, sep = ";")
+feb<- power[power$Date %in% c("1/2/2007","2/2/2007") ,]
 
-power$Date <- as.Date(power$Date, format="%d/%m/%Y")
-
-#Subset by dates 2007-02-01 and 2007-02-02
-feb<-subset(power, subset =(Date == "2007-02-01" | Date == "2007-02-02"))
+##Transform Date and Time 
+feb$datetime <- strptime(paste(feb$Date, feb$Time, sep=" "), "%d/%m/%Y %H:%M:%S") 
 
 ##Create plot 1
 hist(as.numeric(as.character(feb$Global_active_power)), col="red", main= "Global Active Power",
